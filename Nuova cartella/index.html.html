@@ -1,0 +1,2577 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RetroAvia - Il Supereroe dei Game Boy</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --primary-red: #e73c3e;
+            --primary-blue: #1e3a8a;
+            --primary-yellow: #fbbf24;
+            --dark-bg: #0f172a;
+            --light-bg: #1e293b;
+            --text-light: #f8fafc;
+            --text-dark: #0f172a;
+            --accent-gold: #f59e0b;
+            --success-green: #10b981;
+            --danger-red: #ef4444;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            font-weight: 400;
+            line-height: 1.6;
+            background: linear-gradient(135deg, var(--dark-bg) 0%, var(--primary-blue) 50%, var(--primary-red) 100%);
+            color: var(--text-light);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 20% 80%, rgba(251, 191, 36, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(231, 60, 62, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(30, 58, 138, 0.1) 0%, transparent 50%);
+            animation: particleFloat 20s ease-in-out infinite;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        @keyframes particleFloat {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+        
+        .hero-section {
+            text-align: center;
+            padding: 2rem 1rem;
+            background: linear-gradient(45deg, var(--primary-red), var(--primary-blue), var(--primary-yellow), var(--primary-red));
+            background-size: 400% 400%;
+            animation: gradientShift 8s ease-in-out infinite;
+            position: relative;
+            overflow: hidden;
+            border-bottom: 5px solid var(--accent-gold);
+        }
+        
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            25% { background-position: 100% 50%; }
+            50% { background-position: 50% 100%; }
+            75% { background-position: 0% 50%; }
+        }
+        
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 30% 70%, rgba(255,255,255,0.2) 0%, transparent 30%),
+                radial-gradient(circle at 70% 30%, rgba(255,255,255,0.1) 0%, transparent 40%);
+            animation: shimmer 4s ease-in-out infinite;
+        }
+        
+        @keyframes shimmer {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+        
+        .hero-title {
+            font-family: 'Courier New', 'Monaco', 'Menlo', 'Consolas', monospace;
+            font-size: clamp(2.5rem, 6vw, 5rem);
+            font-weight: 700;
+            text-shadow: 
+                3px 3px 0px rgba(0,0,0,0.7),
+                6px 6px 0px rgba(231, 60, 62, 0.5),
+                9px 9px 0px rgba(30, 58, 138, 0.3);
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, #fff, var(--accent-gold), #fff);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: titleGlow 3s ease-in-out infinite;
+            letter-spacing: 2px;
+        }
+        
+        @keyframes titleGlow {
+            0%, 100% { filter: drop-shadow(0 0 10px rgba(251, 191, 36, 0.5)); }
+            50% { filter: drop-shadow(0 0 20px rgba(251, 191, 36, 1)); }
+        }
+        
+        .hero-subtitle {
+            font-size: clamp(1.2rem, 3vw, 2rem);
+            margin-bottom: 2rem;
+            font-weight: 600;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+            animation: subtitlePulse 4s ease-in-out infinite;
+        }
+        
+        @keyframes subtitlePulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        .hero-icons {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 1rem;
+        }
+        
+        .hero-icon {
+            font-size: 3rem;
+            animation: iconBounce 2s ease-in-out infinite;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+        
+        .hero-icon:hover {
+            transform: scale(1.2) rotate(15deg);
+        }
+        
+        .hero-icon:nth-child(1) { animation-delay: 0s; }
+        .hero-icon:nth-child(2) { animation-delay: 0.5s; }
+        .hero-icon:nth-child(3) { animation-delay: 1s; }
+        .hero-icon:nth-child(4) { animation-delay: 1.5s; }
+        
+        @keyframes iconBounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+            display: grid;
+            grid-template-columns: 1fr 380px;
+            gap: 2rem;
+        }
+        
+        @media (max-width: 1024px) {
+            .container {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+        }
+        
+        .quick-configs-container {
+            margin-bottom: 1.5rem;
+        }
+        
+        .quick-configs-title {
+            color: var(--primary-yellow);
+            font-size: 1.4rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        
+        .quick-configs-title::before {
+            content: '🚀';
+            font-size: 1.5rem;
+        }
+        
+        .quick-configs {
+            display: flex;
+            gap: 0.8rem;
+            padding: 1.2rem;
+            background: rgba(15, 23, 42, 0.8);
+            border-radius: 15px;
+            border: 2px solid rgba(251, 191, 36, 0.3);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        
+        .quick-config {
+            flex: 1;
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.15), rgba(16, 185, 129, 0.15));
+            border: 2px solid transparent;
+            border-radius: 12px;
+            padding: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            min-height: 100px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .quick-config::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            transition: left 0.5s ease;
+        }
+        
+        .quick-config:hover::before {
+            left: 100%;
+        }
+        
+        .quick-config:hover {
+            border-color: var(--primary-yellow);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+        }
+        
+        .quick-config h4 {
+            color: var(--primary-yellow);
+            font-size: 1rem;
+            margin-bottom: 0.3rem;
+            font-weight: 700;
+        }
+        
+        .quick-config p {
+            color: var(--text-light);
+            font-size: 0.75rem;
+            margin-bottom: 0.5rem;
+            opacity: 0.8;
+            line-height: 1.2;
+        }
+        
+        .quick-config .price {
+            color: var(--accent-gold);
+            font-size: 1.1rem;
+            font-weight: 700;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .configurator {
+            background: rgba(30, 41, 59, 0.95);
+            border-radius: 25px;
+            padding: 2.5rem;
+            backdrop-filter: blur(15px);
+            border: 3px solid var(--primary-yellow);
+            box-shadow: 
+                0 0 30px rgba(251, 191, 36, 0.4),
+                inset 0 0 20px rgba(255, 255, 255, 0.05);
+            position: relative;
+        }
+        
+        .configurator::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, var(--primary-red), var(--primary-blue), var(--primary-yellow), var(--primary-red));
+            border-radius: 25px;
+            z-index: -1;
+            animation: borderGlow 3s ease-in-out infinite;
+        }
+        
+        @keyframes borderGlow {
+            0%, 100% { opacity: 0.7; }
+            50% { opacity: 1; }
+        }
+        
+        .section {
+            margin-bottom: 2rem;
+            padding: 2rem;
+            background: rgba(15, 23, 42, 0.8);
+            border-radius: 20px;
+            border-left: 6px solid var(--primary-red);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(251, 191, 36, 0.1), transparent);
+            transition: left 0.6s ease;
+        }
+        
+        .section:hover::before {
+            left: 100%;
+        }
+        
+        .section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(231, 60, 62, 0.3);
+            border-left-color: var(--primary-yellow);
+        }
+        
+        .section-title {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--primary-yellow);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        
+        .section-title::before {
+            content: '⚡';
+            font-size: 1.8rem;
+            animation: iconPulse 2s ease-in-out infinite;
+        }
+        
+        @keyframes iconPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.3); }
+        }
+        
+        .option-group {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .option {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.2rem;
+            background: rgba(30, 41, 59, 0.6);
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            border: 3px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .option::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            transition: left 0.5s ease;
+        }
+        
+        .option:hover::before {
+            left: 100%;
+        }
+        
+        .option:hover {
+            background: rgba(59, 130, 246, 0.3);
+            border-color: var(--primary-blue);
+            transform: translateX(5px);
+        }
+        
+        .option.selected {
+            background: linear-gradient(45deg, var(--primary-red), var(--primary-blue));
+            border-color: var(--primary-yellow);
+            color: white;
+            font-weight: 600;
+            box-shadow: 0 5px 20px rgba(231, 60, 62, 0.4);
+        }
+        
+        .option input[type="radio"] {
+            width: 24px;
+            height: 24px;
+            accent-color: var(--primary-yellow);
+        }
+        
+        .option-label {
+            flex: 1;
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+        
+        .option-price {
+            font-weight: 700;
+            color: var(--accent-gold);
+            font-family: 'Courier New', 'Monaco', 'Menlo', 'Consolas', monospace;
+            font-size: 1.1rem;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+
+        /* NUOVI STILI PER L'UPLOAD IMMAGINI */
+        .image-upload-container {
+            margin-top: 1.5rem;
+            padding: 1.5rem;
+            background: rgba(59, 130, 246, 0.1);
+            border: 2px dashed var(--primary-blue);
+            border-radius: 15px;
+            text-align: center;
+            transition: all 0.3s ease;
+            display: none;
+        }
+
+        .image-upload-container.active {
+            display: block;
+            animation: fadeInUp 0.5s ease;
+        }
+
+        .image-upload-container.dragover {
+            border-color: var(--primary-yellow);
+            background: rgba(251, 191, 36, 0.1);
+            transform: scale(1.02);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .upload-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: var(--primary-blue);
+            animation: uploadBounce 2s ease-in-out infinite;
+        }
+
+        @keyframes uploadBounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .upload-text {
+            font-size: 1.1rem;
+            color: var(--text-light);
+            margin-bottom: 1rem;
+            font-weight: 500;
+        }
+
+        .upload-info {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            opacity: 0.7;
+            margin-bottom: 1.5rem;
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        .upload-button {
+            background: linear-gradient(45deg, var(--primary-blue), #3b82f6);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+            border: 2px solid var(--primary-yellow);
+        }
+
+        .upload-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.5);
+        }
+
+        .image-preview {
+            margin-top: 1.5rem;
+            display: none;
+        }
+
+        .image-preview.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .preview-image {
+            max-width: 100%;
+            max-height: 200px;
+            border-radius: 15px;
+            border: 3px solid var(--primary-yellow);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+            margin-bottom: 1rem;
+        }
+
+        .image-info {
+            background: rgba(15, 23, 42, 0.8);
+            padding: 1rem;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .remove-image-btn {
+            background: linear-gradient(45deg, var(--danger-red), #dc2626);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .remove-image-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(239, 68, 68, 0.4);
+        }
+
+        .upload-error {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--danger-red);
+            padding: 1rem;
+            border-radius: 10px;
+            margin-top: 1rem;
+            border: 2px solid var(--danger-red);
+            font-weight: 500;
+            display: none;
+        }
+
+        .upload-error.active {
+            display: block;
+            animation: shake 0.5s ease;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+        
+        .summary-panel {
+            background: linear-gradient(135deg, var(--light-bg), var(--dark-bg));
+            border-radius: 25px;
+            padding: 2.5rem;
+            height: fit-content;
+            position: sticky;
+            top: 2rem;
+            border: 3px solid var(--primary-blue);
+            box-shadow: 
+                0 0 40px rgba(30, 58, 138, 0.4),
+                inset 0 0 20px rgba(255, 255, 255, 0.05);
+        }
+        
+        .summary-title {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--primary-yellow);
+            text-align: center;
+            margin-bottom: 2rem;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.5);
+            animation: titleShine 3s ease-in-out infinite;
+        }
+        
+        @keyframes titleShine {
+            0%, 100% { color: var(--primary-yellow); }
+            50% { color: var(--accent-gold); }
+        }
+        
+        .gameboy-preview {
+            width: 200px;
+            height: 300px;
+            background: linear-gradient(145deg, #e0e0e0, #c0c0c0);
+            border-radius: 25px 25px 15px 15px;
+            margin: 2rem auto;
+            position: relative;
+            box-shadow: 
+                0 10px 30px rgba(0,0,0,0.3),
+                inset 0 0 20px rgba(255,255,255,0.2);
+            transition: all 0.5s ease;
+        }
+        
+        .gameboy-screen {
+            width: 120px;
+            height: 100px;
+            background: #2d3748;
+            border-radius: 10px;
+            position: absolute;
+            top: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 4px solid #1a202c;
+            transition: all 0.5s ease;
+        }
+        
+        .gameboy-dpad {
+            width: 50px;
+            height: 50px;
+            background: #4a5568;
+            position: absolute;
+            bottom: 80px;
+            left: 30px;
+            border-radius: 50%;
+            transition: all 0.5s ease;
+        }
+        
+        .gameboy-buttons {
+            position: absolute;
+            bottom: 80px;
+            right: 30px;
+        }
+        
+        .gameboy-button {
+            width: 20px;
+            height: 20px;
+            background: #e53e3e;
+            border-radius: 50%;
+            margin: 5px;
+            display: inline-block;
+            transition: all 0.5s ease;
+        }
+        
+        .gameboy-preview.ips .gameboy-screen {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            box-shadow: 0 0 20px rgba(102, 126, 234, 0.5);
+        }
+        
+        .gameboy-preview.led {
+            box-shadow: 
+                0 10px 30px rgba(0,0,0,0.3),
+                0 0 30px rgba(251, 191, 36, 0.6);
+        }
+        
+        .gameboy-preview.custom {
+            background: linear-gradient(145deg, #667eea, #764ba2);
+        }
+        
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+            border-bottom: 2px solid rgba(251, 191, 36, 0.2);
+            font-size: 1rem;
+            font-weight: 500;
+        }
+        
+        .summary-item:last-child {
+            border-bottom: none;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 3px solid var(--primary-yellow);
+            font-weight: 700;
+            font-size: 1.4rem;
+        }
+        
+        .total-price {
+            font-family: 'Courier New', 'Monaco', 'Menlo', 'Consolas', monospace;
+            color: var(--accent-gold);
+            font-size: 1.8rem;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            animation: priceGlow 2s ease-in-out infinite;
+        }
+        
+        @keyframes priceGlow {
+            0%, 100% { 
+                color: var(--accent-gold);
+                text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            }
+            50% { 
+                color: #fcd34d;
+                text-shadow: 0 0 20px rgba(252, 211, 77, 0.8);
+            }
+        }
+        
+        .customer-form {
+            background: rgba(30, 41, 59, 0.95);
+            border-radius: 25px;
+            padding: 2.5rem;
+            margin-top: 2rem;
+            border: 3px solid var(--success-green);
+            box-shadow: 
+                0 0 40px rgba(16, 185, 129, 0.4),
+                inset 0 0 20px rgba(255, 255, 255, 0.05);
+        }
+        
+        .form-title {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--success-green);
+            margin-bottom: 2rem;
+            text-align: center;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        
+        .form-group {
+            margin-bottom: 1.8rem;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 0.8rem;
+            color: var(--primary-yellow);
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+        
+        .field-required::after {
+            content: ' *';
+            color: var(--danger-red);
+        }
+        
+        .form-input, .form-textarea {
+            width: 100%;
+            padding: 1rem;
+            border: 3px solid var(--primary-blue);
+            border-radius: 15px;
+            background: rgba(15, 23, 42, 0.9);
+            color: var(--text-light);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            font-size: 1rem;
+            font-weight: 400;
+            transition: all 0.3s ease;
+        }
+        
+        .form-input:focus, .form-textarea:focus {
+            outline: none;
+            border-color: var(--primary-yellow);
+            box-shadow: 0 0 20px rgba(251, 191, 36, 0.4);
+            transform: scale(1.02);
+        }
+        
+        .form-textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+        
+        .validation-error {
+            border-color: var(--danger-red) !important;
+            box-shadow: 0 0 10px rgba(239, 68, 68, 0.3) !important;
+        }
+        
+        .validation-message {
+            color: var(--danger-red);
+            font-size: 0.8rem;
+            margin-top: 0.5rem;
+            display: none;
+        }
+        
+        .order-id {
+            font-family: 'Courier New', 'Monaco', 'Menlo', 'Consolas', monospace;
+            color: var(--accent-gold);
+            text-align: center;
+            margin: 1.5rem 0;
+            font-size: 1.2rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        
+        .action-buttons, .share-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 1.2rem 2.5rem;
+            border: none;
+            border-radius: 20px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+            min-width: 160px;
+        }
+        
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.6s;
+        }
+        
+        .btn:hover::before {
+            left: 100%;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(45deg, var(--primary-red), var(--primary-blue));
+            color: white;
+            border: 2px solid var(--primary-yellow);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(231, 60, 62, 0.5);
+        }
+        
+        .btn-copy {
+            background: linear-gradient(45deg, #6366f1, #8b5cf6);
+            color: white;
+            border: 2px solid var(--primary-yellow);
+        }
+        
+        .btn-copy:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(99, 102, 241, 0.5);
+        }
+        
+        .btn-email {
+            background: linear-gradient(45deg, #3b82f6, #1d4ed8);
+            color: white;
+            border: 2px solid var(--primary-yellow);
+        }
+        
+        .btn-email:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.5);
+        }
+        
+        .btn-whatsapp {
+            background: linear-gradient(45deg, #22c55e, #16a34a);
+            color: white;
+            border: 2px solid var(--primary-yellow);
+        }
+        
+        .btn-whatsapp:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(34, 197, 94, 0.5);
+        }
+        
+        .btn-instagram {
+            background: linear-gradient(45deg, #8b5cf6, #7c3aed);
+            color: white;
+            border: 2px solid var(--primary-yellow);
+        }
+        
+        .btn-instagram:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(139, 92, 246, 0.5);
+        }
+        
+        .ai-assistant {
+            background: linear-gradient(135deg, var(--primary-blue), var(--dark-bg));
+            border-radius: 25px;
+            padding: 2.5rem;
+            margin-top: 2rem;
+            border: 3px solid var(--accent-gold);
+            box-shadow: 
+                0 0 40px rgba(245, 158, 11, 0.4),
+                inset 0 0 20px rgba(255, 255, 255, 0.05);
+        }
+        
+        .ai-title {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--accent-gold);
+            margin-bottom: 1.5rem;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.8rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        
+        .ai-title::before {
+            content: '🤖';
+            font-size: 1.8rem;
+            animation: robotBlink 3s ease-in-out infinite;
+        }
+        
+        @keyframes robotBlink {
+            0%, 90%, 100% { opacity: 1; }
+            95% { opacity: 0.3; }
+        }
+        
+        .ai-suggestions {
+            background: rgba(15, 23, 42, 0.8);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border: 2px solid rgba(251, 191, 36, 0.3);
+        }
+        
+        .suggestion {
+            background: rgba(59, 130, 246, 0.2);
+            border-left: 5px solid var(--primary-blue);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-radius: 0 15px 15px 0;
+            font-size: 1rem;
+            line-height: 1.6;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .suggestion::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: linear-gradient(45deg, var(--primary-blue), var(--primary-yellow));
+            animation: suggestionPulse 2s ease-in-out infinite;
+        }
+        
+        @keyframes suggestionPulse {
+            0%, 100% { opacity: 0.7; }
+            50% { opacity: 1; }
+        }
+        
+        .suggestion:last-child {
+            margin-bottom: 0;
+        }
+        
+        .hero-name-generator {
+            text-align: center;
+            background: rgba(231, 60, 62, 0.2);
+            border-radius: 20px;
+            padding: 2rem;
+            border: 2px solid rgba(231, 60, 62, 0.3);
+        }
+        
+        .hero-name {
+            font-family: 'Courier New', 'Monaco', 'Menlo', 'Consolas', monospace;
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: var(--primary-yellow);
+            margin: 1.5rem 0;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.5);
+            animation: nameGlow 2s ease-in-out infinite;
+        }
+        
+        @keyframes nameGlow {
+            0%, 100% { 
+                color: var(--primary-yellow);
+                text-shadow: 3px 3px 6px rgba(0,0,0,0.5);
+            }
+            50% { 
+                color: #fcd34d;
+                text-shadow: 0 0 20px rgba(252, 211, 77, 0.8);
+            }
+        }
+        
+        .faq-section {
+            background: rgba(15, 23, 42, 0.8);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-top: 2rem;
+            border: 2px solid rgba(16, 185, 129, 0.3);
+        }
+        
+        .faq-item {
+            background: rgba(30, 41, 59, 0.6);
+            border-radius: 15px;
+            margin-bottom: 1rem;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .faq-item:hover {
+            background: rgba(30, 41, 59, 0.8);
+        }
+        
+        .faq-question {
+            padding: 1.5rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        
+        .faq-question:hover {
+            background: rgba(59, 130, 246, 0.2);
+        }
+        
+        .faq-answer {
+            padding: 0 1.5rem;
+            max-height: 0;
+            overflow: hidden;
+            transition: all 0.4s ease;
+            line-height: 1.6;
+        }
+        
+        .faq-answer.active {
+            max-height: 300px;
+            padding: 1.5rem;
+        }
+        
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(45deg, var(--success-green), var(--primary-blue));
+            color: white;
+            padding: 1.5rem 2.5rem;
+            border-radius: 20px;
+            box-shadow: 0 8px 30px rgba(16, 185, 129, 0.5);
+            z-index: 1000;
+            transform: translateX(400px);
+            transition: transform 0.4s ease;
+            font-weight: 600;
+            border: 2px solid var(--primary-yellow);
+        }
+        
+        .notification.show {
+            transform: translateX(0);
+        }
+        
+        .notification.error {
+            background: linear-gradient(45deg, var(--danger-red), #dc2626);
+            box-shadow: 0 8px 30px rgba(239, 68, 68, 0.5);
+        }
+        
+        .delivery-estimate {
+            background: rgba(16, 185, 129, 0.1);
+            border: 2px solid var(--success-green);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-top: 1rem;
+            text-align: center;
+        }
+        
+        .delivery-estimate h4 {
+            color: var(--success-green);
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+        
+        .delivery-estimate p {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+        
+        .savings-indicator {
+            background: linear-gradient(45deg, var(--success-green), #059669);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-top: 1rem;
+            display: inline-block;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.8s ease-out forwards;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes ripple {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .hero-section {
+                padding: 1.5rem 1rem;
+                margin: 0 -1rem;
+            }
+            
+            .hero-title {
+                font-size: clamp(2rem, 8vw, 3.5rem);
+                margin-bottom: 0.5rem;
+            }
+            
+            .hero-subtitle {
+                font-size: clamp(1rem, 4vw, 1.5rem);
+                margin-bottom: 1rem;
+            }
+            
+            .configurator, .summary-panel, .customer-form, .ai-assistant {
+                padding: 1.5rem;
+            }
+            
+            .action-buttons, .share-buttons {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+            
+            .hero-icons {
+                flex-wrap: wrap;
+                gap: 1rem;
+            }
+            
+            .hero-icon {
+                font-size: 2rem;
+            }
+            
+            .quick-configs {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            
+            .quick-config {
+                min-height: 80px;
+                padding: 0.8rem;
+            }
+            
+            .quick-config h4 {
+                font-size: 0.9rem;
+                margin-bottom: 0.2rem;
+            }
+            
+            .quick-config p {
+                font-size: 0.7rem;
+                margin-bottom: 0.3rem;
+            }
+            
+            .quick-config .price {
+                font-size: 1rem;
+            }
+            
+            .gameboy-preview {
+                width: 150px;
+                height: 225px;
+            }
+            
+            .gameboy-screen {
+                width: 90px;
+                height: 75px;
+                top: 30px;
+            }
+
+            .image-upload-container {
+                padding: 1rem;
+            }
+
+            .upload-icon {
+                font-size: 2rem;
+            }
+
+            .upload-text {
+                font-size: 1rem;
+            }
+
+            .preview-image {
+                max-height: 150px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="hero-section">
+        <div class="hero-content">
+            <h1 class="hero-title">RETROAVIA</h1>
+            <p class="hero-subtitle">🦸‍♂️ Il Supereroe dei Game Boy 🦸‍♂️</p>
+            <p style="font-size: 1.2rem; margin-bottom: 1rem;">Trasforma il tuo Game Boy in una leggenda!</p>
+            <div class="hero-icons">
+                <span class="hero-icon">🕷️</span>
+                <span class="hero-icon">⚡</span>
+                <span class="hero-icon">🛡️</span>
+                <span class="hero-icon">🎮</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="configurator">
+            <!-- Setup Consigliati -->
+            <div class="quick-configs-container">
+                <h3 class="quick-configs-title">Setup Consigliati</h3>
+                <div class="quick-configs">
+                    <div class="quick-config" onclick="applyQuickConfig('budget')">
+                        <h4>💰 Budget</h4>
+                        <p>Perfetto per iniziare</p>
+                        <div class="price">85€</div>
+                    </div>
+                    <div class="quick-config" onclick="applyQuickConfig('gaming')">
+                        <h4>🎮 Gaming Pro</h4>
+                        <p>La scelta dei gamer</p>
+                        <div class="price">185€</div>
+                    </div>
+                    <div class="quick-config" onclick="applyQuickConfig('collector')">
+                        <h4>💎 Collezione</h4>
+                        <p>Il massimo livello</p>
+                        <div class="price">265€</div>
+                    </div>
+                </div>
+            </div>
+            <!-- 1. Scelta Game Boy -->
+            <div class="section fade-in">
+                <h3 class="section-title">Game Boy (Modello Base)</h3>
+                <div class="option-group" id="gameboy-model">
+                    <div class="option" onclick="selectOption('gameboy-model', this, 'Game Boy Color', 0)">
+                        <input type="radio" name="gameboy-model" value="Game Boy Color">
+                        <span class="option-label">Game Boy Color 🎮</span>
+                        <span class="option-price">Base</span>
+                    </div>
+                    <div class="option" onclick="selectOption('gameboy-model', this, 'Game Boy Advance', 0)">
+                        <input type="radio" name="gameboy-model" value="Game Boy Advance">
+                        <span class="option-label">Game Boy Advance 🎮</span>
+                        <span class="option-price">Base</span>
+                    </div>
+                    <div class="option selected" onclick="selectOption('gameboy-model', this, 'Game Boy Advance SP', 0)">
+                        <input type="radio" name="gameboy-model" value="Game Boy Advance SP" checked>
+                        <span class="option-label">Game Boy Advance SP ⚡</span>
+                        <span class="option-price">Base</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. Livello di Modifica -->
+            <div class="section fade-in">
+                <h3 class="section-title">Livello di Modifica</h3>
+                <div class="option-group" id="modification-level">
+                    <div class="option" onclick="selectOption('modification-level', this, 'Solo Game Boy', 80)">
+                        <input type="radio" name="modification-level" value="Solo Game Boy">
+                        <span class="option-label">Solo Game Boy (senza modifiche) 🎮</span>
+                        <span class="option-price">80€</span>
+                    </div>
+                    <div class="option selected" onclick="selectOption('modification-level', this, 'Con scocca semplice', 100)">
+                        <input type="radio" name="modification-level" value="Con scocca semplice" checked>
+                        <span class="option-label">Con scocca semplice 🛡️</span>
+                        <span class="option-price">100€</span>
+                    </div>
+                    <div class="option" onclick="selectOption('modification-level', this, 'Con scocca personalizzata', 120)">
+                        <input type="radio" name="modification-level" value="Con scocca personalizzata">
+                        <span class="option-label">Con scocca personalizzata 🎨</span>
+                        <span class="option-price">120€</span>
+                    </div>
+                </div>
+
+                <!-- Sezione Upload Immagine -->
+                <div class="image-upload-container" id="image-upload-container">
+                    <div class="upload-icon">🎨</div>
+                    <div class="upload-text">Carica la tua immagine personalizzata</div>
+                    <div class="upload-info">Formati supportati: JPG, PNG | Dimensione massima: 10MB</div>
+                    
+                    <input type="file" id="custom-image-input" class="file-input" accept=".jpg,.jpeg,.png" />
+                    <button class="upload-button" onclick="document.getElementById('custom-image-input').click()">
+                        📁 Scegli Immagine
+                    </button>
+                    
+                    <div class="upload-error" id="upload-error">
+                        <span id="upload-error-text"></span>
+                    </div>
+                    
+                    <div class="image-preview" id="image-preview">
+                        <img id="preview-image" class="preview-image" alt="Anteprima immagine personalizzata" />
+                        <div class="image-info" id="image-info">
+                            <div><strong>Nome:</strong> <span id="image-name"></span></div>
+                            <div><strong>Dimensione:</strong> <span id="image-size"></span></div>
+                            <div><strong>Formato:</strong> <span id="image-type"></span></div>
+                        </div>
+                        <button class="remove-image-btn" onclick="removeCustomImage()">🗑️ Rimuovi Immagine</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. Etichetta -->
+            <div class="section fade-in">
+                <h3 class="section-title">Etichetta</h3>
+                <div class="option-group" id="label">
+                    <div class="option selected" onclick="selectOption('label', this, 'Nintendo', 0)">
+                        <input type="radio" name="label" value="Nintendo" checked>
+                        <span class="option-label">Nintendo (originale) 🏷️</span>
+                        <span class="option-price">Gratis</span>
+                    </div>
+                    <div class="option" onclick="selectOption('label', this, 'Personalizzata normale', 5)">
+                        <input type="radio" name="label" value="Personalizzata normale">
+                        <span class="option-label">Personalizzata normale 🎨</span>
+                        <span class="option-price">+5€</span>
+                    </div>
+                    <div class="option" onclick="selectOption('label', this, 'Personalizzata olografica', 5)">
+                        <input type="radio" name="label" value="Personalizzata olografica">
+                        <span class="option-label">Personalizzata olografica ✨</span>
+                        <span class="option-price">+5€</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4. Batteria -->
+            <div class="section fade-in">
+                <h3 class="section-title">Batteria</h3>
+                <div class="option-group" id="battery">
+                    <div class="option selected" onclick="selectOption('battery', this, 'Originale', 0)">
+                        <input type="radio" name="battery" value="Originale" checked>
+                        <span class="option-label">Originale 🔋</span>
+                        <span class="option-price">Gratis</span>
+                    </div>
+                    <div class="option" onclick="selectOption('battery', this, '850mAh', 10)">
+                        <input type="radio" name="battery" value="850mAh">
+                        <span class="option-label">850mAh ⚡</span>
+                        <span class="option-price">+10€</span>
+                    </div>
+                    <div class="option" onclick="selectOption('battery', this, '1600mAh', 20)">
+                        <input type="radio" name="battery" value="1600mAh">
+                        <span class="option-label">1600mAh 🚀</span>
+                        <span class="option-price">+20€</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 5. Audio -->
+            <div class="section fade-in">
+                <h3 class="section-title">Audio</h3>
+                <div class="option-group" id="audio">
+                    <div class="option selected" onclick="selectOption('audio', this, 'Originale', 0)">
+                        <input type="radio" name="audio" value="Originale" checked>
+                        <span class="option-label">Originale 🔊</span>
+                        <span class="option-price">Gratis</span>
+                    </div>
+                    <div class="option" onclick="selectOption('audio', this, 'Nuovo', 10)">
+                        <input type="radio" name="audio" value="Nuovo">
+                        <span class="option-label">Nuovo 🎵</span>
+                        <span class="option-price">+10€</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 6. Display -->
+            <div class="section fade-in">
+                <h3 class="section-title">Display</h3>
+                <div class="option-group" id="display">
+                    <div class="option selected" onclick="selectOption('display', this, 'Originale', 0)">
+                        <input type="radio" name="display" value="Originale" checked>
+                        <span class="option-label">Originale 📺</span>
+                        <span class="option-price">Gratis</span>
+                    </div>
+                    <div class="option" onclick="selectOption('display', this, 'IPS', 60)">
+                        <input type="radio" name="display" value="IPS">
+                        <span class="option-label">IPS ✨</span>
+                        <span class="option-price">+60€</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 7. Kit LED -->
+            <div class="section fade-in">
+                <h3 class="section-title">Kit LED</h3>
+                <div class="option-group" id="led-kit">
+                    <div class="option selected" onclick="selectOption('led-kit', this, 'No', 0)">
+                        <input type="radio" name="led-kit" value="No" checked>
+                        <span class="option-label">No 🌙</span>
+                        <span class="option-price">Gratis</span>
+                    </div>
+                    <div class="option" onclick="selectOption('led-kit', this, 'Sì', 35)">
+                        <input type="radio" name="led-kit" value="Sì">
+                        <span class="option-label">Sì ✨</span>
+                        <span class="option-price">+35€</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 8. Box Personalizzato -->
+            <div class="section fade-in">
+                <h3 class="section-title">Box Personalizzato</h3>
+                <div class="option-group" id="custom-box">
+                    <div class="option selected" onclick="selectOption('custom-box', this, 'No', 0)">
+                        <input type="radio" name="custom-box" value="No" checked>
+                        <span class="option-label">No 📦</span>
+                        <span class="option-price">Gratis</span>
+                    </div>
+                    <div class="option" onclick="selectOption('custom-box', this, 'Sì', 20)">
+                        <input type="radio" name="custom-box" value="Sì">
+                        <span class="option-label">Sì 🎁</span>
+                        <span class="option-price">+20€</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 9. Cover Trasparente -->
+            <div class="section fade-in">
+                <h3 class="section-title">Cover Trasparente</h3>
+                <div class="option-group" id="transparent-cover">
+                    <div class="option selected" onclick="selectOption('transparent-cover', this, 'No', 0)">
+                        <input type="radio" name="transparent-cover" value="No" checked>
+                        <span class="option-label">No 🚫</span>
+                        <span class="option-price">Gratis</span>
+                    </div>
+                    <div class="option" onclick="selectOption('transparent-cover', this, 'Sì', 5)">
+                        <input type="radio" name="transparent-cover" value="Sì">
+                        <span class="option-label">Sì 🔍</span>
+                        <span class="option-price">+5€</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 10. Game Boy fornito dal cliente -->
+            <div class="section fade-in">
+                <h3 class="section-title">Game Boy fornito dal cliente</h3>
+                <div class="option-group" id="customer-gameboy">
+                    <div class="option selected" onclick="selectOption('customer-gameboy', this, 'No', 0)">
+                        <input type="radio" name="customer-gameboy" value="No" checked>
+                        <span class="option-label">No 🚫</span>
+                        <span class="option-price">Gratis</span>
+                    </div>
+                    <div class="option" onclick="selectOption('customer-gameboy', this, 'Sì', -50)">
+                        <input type="radio" name="customer-gameboy" value="Sì">
+                        <span class="option-label">Sì ✅</span>
+                        <span class="option-price">-50€</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="customer-form">
+                <h3 class="form-title">🦸‍♂️ Dati del Supereroe</h3>
+                <div class="form-group">
+                    <label class="form-label field-required" for="customer-name">Nome Cliente</label>
+                    <input type="text" id="customer-name" class="form-input" placeholder="Il tuo nome da supereroe..." required>
+                    <div class="validation-message" id="name-error">Il nome è obbligatorio</div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label field-required" for="customer-contact">Contatto (Email o Instagram)</label>
+                    <input type="text" id="customer-contact" class="form-input" placeholder="email@example.com o @instagram" required>
+                    <div class="validation-message" id="contact-error">Il contatto è obbligatorio</div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="customer-notes">Note Personali</label>
+                    <textarea id="customer-notes" class="form-textarea" placeholder="Raccontaci cosa rende speciale il tuo Game Boy..."></textarea>
+                </div>
+                
+                <div class="order-id">
+                    <span>🆔 Codice Ordine: <span id="order-code">RETRO-GB-2025-001</span></span>
+                </div>
+
+                <div class="action-buttons">
+                    <button class="btn btn-copy" onclick="copyConfigurationText()">📋 Copia Testo</button>
+                    <button class="btn btn-email" onclick="shareViaEmail()">📧 Email</button>
+                    <button class="btn btn-whatsapp" onclick="shareViaWhatsApp()">📱 WhatsApp</button>
+                    <button class="btn btn-instagram" onclick="shareViaInstagram()">📷 Instagram</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="summary-panel">
+            <!-- Anteprima Game Boy -->
+            <div class="gameboy-preview" id="gameboy-preview">
+                <div class="gameboy-screen"></div>
+                <div class="gameboy-dpad"></div>
+                <div class="gameboy-buttons">
+                    <div class="gameboy-button"></div>
+                    <div class="gameboy-button"></div>
+                </div>
+            </div>
+
+            <h3 class="summary-title">🎯 Riepilogo Configurazione</h3>
+            <div id="summary-content">
+                <div class="summary-item">
+                    <span>Modello:</span>
+                    <span id="summary-model">Game Boy Advance SP</span>
+                </div>
+                <div class="summary-item">
+                    <span>Modifica:</span>
+                    <span id="summary-modification">Con scocca semplice</span>
+                </div>
+                <div class="summary-item" id="summary-custom-image-item" style="display: none;">
+                    <span>Immagine:</span>
+                    <span id="summary-custom-image">Caricata ✅</span>
+                </div>
+                <div class="summary-item">
+                    <span>Etichetta:</span>
+                    <span id="summary-label">Nintendo</span>
+                </div>
+                <div class="summary-item">
+                    <span>Batteria:</span>
+                    <span id="summary-battery">Originale</span>
+                </div>
+                <div class="summary-item">
+                    <span>Audio:</span>
+                    <span id="summary-audio">Originale</span>
+                </div>
+                <div class="summary-item">
+                    <span>Display:</span>
+                    <span id="summary-display">Originale</span>
+                </div>
+                <div class="summary-item">
+                    <span>Kit LED:</span>
+                    <span id="summary-led">No</span>
+                </div>
+                <div class="summary-item">
+                    <span>Box:</span>
+                    <span id="summary-box">No</span>
+                </div>
+                <div class="summary-item">
+                    <span>Cover:</span>
+                    <span id="summary-cover">No</span>
+                </div>
+                <div class="summary-item">
+                    <span>GB Cliente:</span>
+                    <span id="summary-customer-gb">No</span>
+                </div>
+                <div class="summary-item">
+                    <span>💰 TOTALE:</span>
+                    <span class="total-price" id="total-price">100€</span>
+                </div>
+                
+                <!-- Indicatore di risparmio -->
+                <div id="savings-indicator" class="savings-indicator" style="display: none;">
+                    💰 Risparmi: <span id="savings-amount">0€</span>
+                </div>
+
+                <!-- Stima consegna -->
+                <div class="delivery-estimate">
+                    <h4>🚚 Tempi di consegna stimati</h4>
+                    <p id="delivery-time">14-21 giorni lavorativi</p>
+                </div>
+            </div>
+
+            <div class="ai-assistant">
+                <h3 class="ai-title">AI Assistant Intelligente</h3>
+                
+                <div class="ai-suggestions" id="ai-suggestions">
+                    <div class="suggestion">
+                        💡 <strong>Consiglio Pro:</strong> Con la scocca semplice, valuta l'aggiunta del display IPS per un'esperienza visiva superiore! È la combo preferita dai nostri supereroi! 🦸‍♂️
+                    </div>
+                </div>
+
+                <div class="hero-name-generator">
+                    <h4 style="color: var(--primary-yellow); margin-bottom: 1rem;">🦸‍♂️ Il Tuo Nome da Supereroe</h4>
+                    <div class="hero-name" id="hero-name">Captain Pixel</div>
+                    <button class="btn btn-primary" onclick="generateHeroName()">🎲 Genera Nuovo Nome</button>
+                </div>
+
+                <div class="faq-section">
+                    <h4 style="color: var(--success-green); margin-bottom: 1.5rem;">❓ Domande Frequenti</h4>
+                    
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="toggleFAQ(this)">
+                            <span>🏷️ Che differenza c'è tra etichetta normale e olografica?</span>
+                            <span>+</span>
+                        </div>
+                        <div class="faq-answer">
+                            L'etichetta normale ha colori vividi e stampa di alta qualità, perfetta per design personalizzati. L'olografica invece ha effetti prismatici che cambiano colore con la luce - un vero spettacolo che cattura l'attenzione! È il tocco premium che distingue i veri collezionisti! 🌈
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="toggleFAQ(this)">
+                            <span>🎮 Che differenza c'è tra display originale e IPS?</span>
+                            <span>+</span>
+                        </div>
+                        <div class="faq-answer">
+                            Il display IPS è una vera rivoluzione! Offre colori più vividi del 300%, migliore visibilità a 178° di angolazione e retroilluminazione uniforme. È come passare da una TV del 1990 a un monitor gaming del 2025! 🌟
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="toggleFAQ(this)">
+                            <span>⚡ Quale batteria mi consigliate per l'autonomia?</span>
+                            <span>+</span>
+                        </div>
+                        <div class="faq-answer">
+                            Dipende dal tuo stile! La 850mAh è perfetta per 8-12 ore di gioco (uso normale), mentre la 1600mAh ti garantisce 15-20 ore di autonomia continua - ideale per veri gamer e lunghi viaggi! È la scelta di Tony Stark! 🚀
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="toggleFAQ(this)">
+                            <span>✨ Il Kit LED vale davvero la spesa?</span>
+                            <span>+</span>
+                        </div>
+                        <div class="faq-answer">
+                            ASSOLUTAMENTE SÌ! Il Kit LED trasforma il tuo Game Boy in uno spettacolo luminoso che fa girare la testa. Perfetto per giocare al buio, creare atmosfera e diventare il centro dell'attenzione. Effetto WOW garantito! 🌈
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="toggleFAQ(this)">
+                            <span>🎨 Come funziona l'upload dell'immagine personalizzata?</span>
+                            <span>+</span>
+                        </div>
+                        <div class="faq-answer">
+                            Quando scegli "scocca personalizzata", puoi caricare la tua immagine (JPG/PNG, max 10MB). La tua immagine verrà stampata direttamente sulla scocca con tecnologia di alta qualità. Perfetto per logo, arte personale o design unici! 🖼️
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="notification" id="notification">
+        <span id="notification-text">Configurazione salvata!</span>
+    </div>
+
+    <script>
+        // === CONFIGURAZIONE GLOBALE ===
+        let configuration = {
+            'gameboy-model': { name: 'Game Boy Advance SP', price: 0 },
+            'modification-level': { name: 'Con scocca semplice', price: 100 },
+            'label': { name: 'Nintendo', price: 0 },
+            'battery': { name: 'Originale', price: 0 },
+            'audio': { name: 'Originale', price: 0 },
+            'display': { name: 'Originale', price: 0 },
+            'led-kit': { name: 'No', price: 0 },
+            'custom-box': { name: 'No', price: 0 },
+            'transparent-cover': { name: 'No', price: 0 },
+            'customer-gameboy': { name: 'No', price: 0 }
+        };
+
+        // Variabile globale per l'immagine personalizzata
+        let customImageData = null;
+
+        // === CONFIGURAZIONI RAPIDE ===
+        const quickConfigs = {
+            budget: {
+                'gameboy-model': { name: 'Game Boy Advance SP', price: 0 },
+                'modification-level': { name: 'Solo Game Boy', price: 80 },
+                'label': { name: 'Nintendo', price: 0 },
+                'battery': { name: 'Originale', price: 0 },
+                'audio': { name: 'Originale', price: 0 },
+                'display': { name: 'Originale', price: 0 },
+                'led-kit': { name: 'No', price: 0 },
+                'custom-box': { name: 'No', price: 0 },
+                'transparent-cover': { name: 'No', price: 0 },
+                'customer-gameboy': { name: 'Sì', price: -50 }
+            },
+            gaming: {
+                'gameboy-model': { name: 'Game Boy Advance SP', price: 0 },
+                'modification-level': { name: 'Con scocca semplice', price: 100 },
+                'label': { name: 'Personalizzata normale', price: 5 },
+                'battery': { name: '1600mAh', price: 20 },
+                'audio': { name: 'Nuovo', price: 10 },
+                'display': { name: 'IPS', price: 60 },
+                'led-kit': { name: 'No', price: 0 },
+                'custom-box': { name: 'No', price: 0 },
+                'transparent-cover': { name: 'No', price: 0 },
+                'customer-gameboy': { name: 'No', price: 0 }
+            },
+            collector: {
+                'gameboy-model': { name: 'Game Boy Advance SP', price: 0 },
+                'modification-level': { name: 'Con scocca personalizzata', price: 120 },
+                'label': { name: 'Personalizzata olografica', price: 5 },
+                'battery': { name: '1600mAh', price: 20 },
+                'audio': { name: 'Nuovo', price: 10 },
+                'display': { name: 'IPS', price: 60 },
+                'led-kit': { name: 'Sì', price: 35 },
+                'custom-box': { name: 'Sì', price: 20 },
+                'transparent-cover': { name: 'Sì', price: 5 },
+                'customer-gameboy': { name: 'No', price: 0 }
+            }
+        };
+
+        // === DATI STATICI ===
+        const heroNames = [
+            'Captain Pixel', 'RetroShocker', 'Game Master Supreme', 'Pixel Guardian', 'Retro Thunder',
+            'Console Commander', 'Digital Defender', 'Arcade Avenger', 'Pixel Phoenix', 'Game Gladiator',
+            'Retro Ranger Elite', 'Console Crusader', 'Digital Dynamo', 'Pixel Paladin', 'Game Guardian Pro',
+            'ByteBuster', 'RetroVolt', 'PixelStorm', 'GameForce Alpha', 'RetroBlaze', 'PixelHawk'
+        ];
+
+        const motivationalPhrases = [
+            "🕹️ Non tutti gli eroi indossano mantelli... alcuni impugnano un Game Boy unico.",
+            "🕷️ Con grande potere arriva un Game Boy ancora più personalizzato.",
+            "⚡ Il tuo Game Boy. Il tuo potere. Il tuo stile.",
+            "🦸‍♂️ Ogni supereroe ha bisogno del proprio Game Boy leggendario.",
+            "🚀 Pronto a salvare il mondo... un pixel alla volta!"
+        ];
+
+        const aiSuggestions = {
+            basic: [
+                "💡 <strong>Primo consiglio:</strong> Stai iniziando con una configurazione base solida! Per un upgrade graduale, considera prima il display IPS - trasformerà completamente la tua esperienza visiva! 🌟"
+            ],
+            intermediate: [
+                "🔥 <strong>Combo Killer:</strong> Display IPS + Kit LED = esperienza cinematografica! È la combinazione più richiesta dai nostri supereroi! ✨"
+            ],
+            advanced: [
+                "🏆 <strong>Setup Leggendario:</strong> Complimenti! Stai creando un Game Boy da vero collezionista. Ogni supereroe ha bisogno del proprio gadget perfetto! 🦸‍♂️"
+            ]
+        };
+
+        // === FUNZIONI UPLOAD IMMAGINI ===
+        function setupImageUpload() {
+            const fileInput = document.getElementById('custom-image-input');
+            const uploadContainer = document.getElementById('image-upload-container');
+            
+            if (fileInput) {
+                fileInput.addEventListener('change', handleImageUpload);
+            }
+
+            if (uploadContainer) {
+                // Gestione drag and drop
+                uploadContainer.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                    uploadContainer.classList.add('dragover');
+                });
+
+                uploadContainer.addEventListener('dragleave', (e) => {
+                    e.preventDefault();
+                    uploadContainer.classList.remove('dragover');
+                });
+
+                uploadContainer.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    uploadContainer.classList.remove('dragover');
+                    
+                    const files = e.dataTransfer.files;
+                    if (files.length > 0) {
+                        processImageFile(files[0]);
+                    }
+                });
+            }
+        }
+
+        function handleImageUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                processImageFile(file);
+            }
+        }
+
+        function processImageFile(file) {
+            const errorContainer = document.getElementById('upload-error');
+            const errorText = document.getElementById('upload-error-text');
+            
+            // Reset errori precedenti
+            hideUploadError();
+
+            // Validazione tipo file
+            const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png'];
+            if (!allowedTypes.includes(file.type)) {
+                showUploadError('⚠️ Formato non supportato! Usa solo JPG o PNG.');
+                return;
+            }
+
+            // Validazione dimensione file (10MB = 10 * 1024 * 1024 bytes)
+            const maxSize = 10 * 1024 * 1024;
+            if (file.size > maxSize) {
+                showUploadError('⚠️ File troppo grande! Dimensione massima: 10MB.');
+                return;
+            }
+
+            // Lettura del file
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                displayImagePreview(file, e.target.result);
+                customImageData = {
+                    name: file.name,
+                    size: file.size,
+                    type: file.type,
+                    data: e.target.result
+                };
+                updateSummaryImage();
+                saveConfiguration();
+                showNotification('🎨 Immagine caricata con successo!', 'success');
+            };
+
+            reader.onerror = function() {
+                showUploadError('❌ Errore durante la lettura del file. Riprova.');
+            };
+
+            reader.readAsDataURL(file);
+        }
+
+        function displayImagePreview(file, dataUrl) {
+            const previewContainer = document.getElementById('image-preview');
+            const previewImage = document.getElementById('preview-image');
+            const imageName = document.getElementById('image-name');
+            const imageSize = document.getElementById('image-size');
+            const imageType = document.getElementById('image-type');
+
+            if (previewImage) previewImage.src = dataUrl;
+            if (imageName) imageName.textContent = file.name;
+            if (imageSize) imageSize.textContent = formatFileSize(file.size);
+            if (imageType) imageType.textContent = file.type.split('/')[1].toUpperCase();
+
+            if (previewContainer) {
+                previewContainer.classList.add('active');
+            }
+        }
+
+        function removeCustomImage() {
+            customImageData = null;
+            
+            const previewContainer = document.getElementById('image-preview');
+            const fileInput = document.getElementById('custom-image-input');
+            
+            if (previewContainer) {
+                previewContainer.classList.remove('active');
+            }
+            
+            if (fileInput) {
+                fileInput.value = '';
+            }
+
+            updateSummaryImage();
+            saveConfiguration();
+            showNotification('🗑️ Immagine rimossa!', 'success');
+        }
+
+        function updateSummaryImage() {
+            const summaryImageItem = document.getElementById('summary-custom-image-item');
+            const summaryImageText = document.getElementById('summary-custom-image');
+            
+            if (customImageData && configuration['modification-level']?.name === 'Con scocca personalizzata') {
+                if (summaryImageItem) {
+                    summaryImageItem.style.display = 'flex';
+                }
+                if (summaryImageText) {
+                    summaryImageText.textContent = `${customImageData.name} ✅`;
+                }
+            } else {
+                if (summaryImageItem) {
+                    summaryImageItem.style.display = 'none';
+                }
+            }
+        }
+
+        function showUploadError(message) {
+            const errorContainer = document.getElementById('upload-error');
+            const errorText = document.getElementById('upload-error-text');
+            
+            if (errorText) errorText.textContent = message;
+            if (errorContainer) {
+                errorContainer.classList.add('active');
+                setTimeout(() => {
+                    errorContainer.classList.remove('active');
+                }, 5000);
+            }
+        }
+
+        function hideUploadError() {
+            const errorContainer = document.getElementById('upload-error');
+            if (errorContainer) {
+                errorContainer.classList.remove('active');
+            }
+        }
+
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+
+        function toggleImageUploadContainer() {
+            const uploadContainer = document.getElementById('image-upload-container');
+            const isCustomShell = configuration['modification-level']?.name === 'Con scocca personalizzata';
+            
+            if (uploadContainer) {
+                if (isCustomShell) {
+                    uploadContainer.classList.add('active');
+                } else {
+                    uploadContainer.classList.remove('active');
+                    // Se si cambia opzione, rimuovi l'immagine caricata
+                    if (customImageData) {
+                        removeCustomImage();
+                    }
+                }
+            }
+            
+            updateSummaryImage();
+        }
+
+        // === FUNZIONI CORE ===
+        function generateUniqueOrderId() {
+            const now = new Date();
+            const year = now.getFullYear();
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const day = String(now.getDate()).padStart(2, '0');
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            const random = Math.floor(Math.random() * 1000).toString().padStart(3, '0');
+            
+            return `RETRO-GB-${year}${month}${day}-${hours}${minutes}${seconds}-${random}`;
+        }
+
+        function saveConfiguration() {
+            try {
+                const saveData = {
+                    configuration: configuration,
+                    customImage: customImageData,
+                    customerData: {
+                        name: document.getElementById('customer-name')?.value || '',
+                        contact: document.getElementById('customer-contact')?.value || '',
+                        notes: document.getElementById('customer-notes')?.value || ''
+                    },
+                    timestamp: new Date().toISOString()
+                };
+                // Salvataggio silenzioso
+            } catch (error) {
+                // Gestione errori silenziosa
+            }
+        }
+
+        // === CONFIGURAZIONI RAPIDE ===
+        function applyQuickConfig(type) {
+            if (!quickConfigs[type]) return;
+            
+            configuration = { ...quickConfigs[type] };
+            
+            // Reset dell'immagine se non è scocca personalizzata
+            if (configuration['modification-level']?.name !== 'Con scocca personalizzata') {
+                customImageData = null;
+            }
+            
+            updateUIFromConfiguration();
+            updateSummary();
+            updateGameBoyPreview();
+            updateAISuggestions();
+            toggleImageUploadContainer();
+            saveConfiguration();
+            
+            showNotification(`🚀 Configurazione ${type.charAt(0).toUpperCase() + type.slice(1)} applicata!`, 'success');
+        }
+
+        function updateUIFromConfiguration() {
+            Object.entries(configuration).forEach(([category, config]) => {
+                const options = document.querySelectorAll(`#${category} .option`);
+                options.forEach(option => {
+                    const input = option.querySelector('input');
+                    if (input && input.value === config.name) {
+                        option.classList.add('selected');
+                        input.checked = true;
+                    } else {
+                        option.classList.remove('selected');
+                        if (input) input.checked = false;
+                    }
+                });
+            });
+        }
+
+        // === SELEZIONE OPZIONI ===
+        function selectOption(category, element, name, price) {
+            const options = element.parentNode.querySelectorAll('.option');
+            options.forEach(opt => {
+                opt.classList.remove('selected');
+                opt.querySelector('input').checked = false;
+            });
+            
+            element.classList.add('selected');
+            element.querySelector('input').checked = true;
+            
+            element.style.transform = 'scale(1.02)';
+            setTimeout(() => {
+                element.style.transform = 'scale(1)';
+            }, 200);
+            
+            configuration[category] = { name: name, price: price };
+            
+            // Gestione speciale per il livello di modifica
+            if (category === 'modification-level') {
+                toggleImageUploadContainer();
+            }
+            
+            updateSummary();
+            updateGameBoyPreview();
+            updateAISuggestions();
+            saveConfiguration();
+        }
+
+        // === AGGIORNAMENTI UI ===
+        function updateGameBoyPreview() {
+            const preview = document.getElementById('gameboy-preview');
+            if (!preview) return;
+            
+            preview.className = 'gameboy-preview';
+            
+            if (configuration['display']?.name === 'IPS') {
+                preview.classList.add('ips');
+            }
+            
+            if (configuration['led-kit']?.name === 'Sì') {
+                preview.classList.add('led');
+            }
+            
+            if (configuration['modification-level']?.name === 'Con scocca personalizzata') {
+                preview.classList.add('custom');
+            }
+        }
+
+        function calculateSavings() {
+            const basePrice = 150;
+            let currentTotal = 0;
+            Object.values(configuration).forEach(item => {
+                if (item && typeof item.price === 'number') {
+                    currentTotal += item.price;
+                }
+            });
+            
+            const savings = Math.max(0, basePrice - currentTotal);
+            const savingsIndicator = document.getElementById('savings-indicator');
+            const savingsAmount = document.getElementById('savings-amount');
+            
+            if (savings > 0 && savingsIndicator && savingsAmount) {
+                savingsAmount.textContent = savings + '€';
+                savingsIndicator.style.display = 'inline-block';
+            } else if (savingsIndicator) {
+                savingsIndicator.style.display = 'none';
+            }
+        }
+
+        function updateDeliveryEstimate() {
+            const deliveryTime = document.getElementById('delivery-time');
+            if (!deliveryTime) return;
+            
+            let days = 14;
+            
+            if (configuration['modification-level']?.name === 'Con scocca personalizzata') days += 4;
+            if (configuration['display']?.name === 'IPS') days += 2;
+            if (configuration['led-kit']?.name === 'Sì') days += 2;
+            if (configuration['label']?.name && configuration['label'].name !== 'Nintendo') days += 1;
+            if (customImageData) days += 2; // Tempo extra per elaborazione immagine
+            
+            deliveryTime.textContent = `${days}-${days + 7} giorni lavorativi`;
+        }
+
+        function updateSummary() {
+            const summaryModel = document.getElementById('summary-model');
+            const summaryModification = document.getElementById('summary-modification');
+            const summaryLabel = document.getElementById('summary-label');
+            const summaryBattery = document.getElementById('summary-battery');
+            const summaryAudio = document.getElementById('summary-audio');
+            const summaryDisplay = document.getElementById('summary-display');
+            const summaryLed = document.getElementById('summary-led');
+            const summaryBox = document.getElementById('summary-box');
+            const summaryCover = document.getElementById('summary-cover');
+            const summaryCustomerGb = document.getElementById('summary-customer-gb');
+            
+            if (summaryModel) summaryModel.textContent = configuration['gameboy-model']?.name || 'Game Boy Advance SP';
+            if (summaryModification) summaryModification.textContent = configuration['modification-level']?.name || 'Con scocca semplice';
+            if (summaryLabel) summaryLabel.textContent = configuration['label']?.name || 'Nintendo';
+            if (summaryBattery) summaryBattery.textContent = configuration['battery']?.name || 'Originale';
+            if (summaryAudio) summaryAudio.textContent = configuration['audio']?.name || 'Originale';
+            if (summaryDisplay) summaryDisplay.textContent = configuration['display']?.name || 'Originale';
+            if (summaryLed) summaryLed.textContent = configuration['led-kit']?.name || 'No';
+            if (summaryBox) summaryBox.textContent = configuration['custom-box']?.name || 'No';
+            if (summaryCover) summaryCover.textContent = configuration['transparent-cover']?.name || 'No';
+            if (summaryCustomerGb) summaryCustomerGb.textContent = configuration['customer-gameboy']?.name || 'No';
+            
+            let total = 0;
+            Object.values(configuration).forEach(item => {
+                if (item && typeof item.price === 'number') {
+                    total += item.price;
+                }
+            });
+            
+            const priceElement = document.getElementById('total-price');
+            if (priceElement) {
+                priceElement.style.transform = 'scale(1.1)';
+                priceElement.style.color = '#fcd34d';
+                priceElement.textContent = `${total}€`;
+                
+                setTimeout(() => {
+                    priceElement.style.transform = 'scale(1)';
+                    priceElement.style.color = '';
+                }, 300);
+            }
+            
+            updateSummaryImage();
+            calculateSavings();
+            updateDeliveryEstimate();
+        }
+
+        function updateAISuggestions() {
+            const suggestionsContainer = document.getElementById('ai-suggestions');
+            if (!suggestionsContainer) return;
+            
+            let suggestionLevel = 'basic';
+            let customSuggestions = [];
+            
+            let totalPrice = 0;
+            let advancedFeatures = 0;
+            
+            Object.values(configuration).forEach(item => {
+                if (item && typeof item.price === 'number') {
+                    totalPrice += item.price;
+                    if (item.price > 20) advancedFeatures++;
+                }
+            });
+            
+            if (totalPrice > 150 || advancedFeatures >= 3) {
+                suggestionLevel = 'advanced';
+            } else if (totalPrice > 100 || advancedFeatures >= 2) {
+                suggestionLevel = 'intermediate';
+            }
+            
+            // Suggerimenti specifici per scocca personalizzata
+            if (configuration['modification-level']?.name === 'Con scocca personalizzata' && !customImageData) {
+                customSuggestions.push('🎨 <strong>Immagine Mancante:</strong> Hai scelto la scocca personalizzata! Non dimenticare di caricare la tua immagine per completare il design unico! 📁');
+            }
+            
+            if (configuration['display']?.name === 'IPS' && configuration['led-kit']?.name === 'No') {
+                customSuggestions.push('🌟 <strong>Combo Perfetta:</strong> Hai scelto il display IPS! Il Kit LED completerebbero il setup da vero supereroe - immagina come brillerà! ✨');
+            }
+            
+            if (configuration['label']?.name && configuration['label'].name !== 'Nintendo') {
+                customSuggestions.push('🏷️ <strong>Personalità Unica:</strong> Etichetta personalizzata = Game Boy unico al mondo! Il tocco finale che fa la differenza tra normale e LEGGENDARIO! ✨');
+            }
+            
+            if (customSuggestions.length === 0) {
+                const generalSuggestions = aiSuggestions[suggestionLevel];
+                customSuggestions = [generalSuggestions[0]];
+            }
+            
+            suggestionsContainer.innerHTML = customSuggestions.map(suggestion => 
+                `<div class="suggestion">${suggestion}</div>`
+            ).join('');
+        }
+
+        // === NOME SUPEREROE ===
+        function generateHeroName() {
+            const randomName = heroNames[Math.floor(Math.random() * heroNames.length)];
+            const heroElement = document.getElementById('hero-name');
+            
+            if (heroElement) {
+                heroElement.style.opacity = '0';
+                heroElement.style.transform = 'scale(0.8)';
+                
+                setTimeout(() => {
+                    heroElement.textContent = randomName;
+                    heroElement.style.transition = 'all 0.4s ease';
+                    heroElement.style.opacity = '1';
+                    heroElement.style.transform = 'scale(1)';
+                }, 200);
+            }
+        }
+
+        // === FAQ ===
+        function toggleFAQ(element) {
+            const answer = element.nextElementSibling;
+            const icon = element.querySelector('span:last-child');
+            const isActive = answer.classList.contains('active');
+            
+            document.querySelectorAll('.faq-answer').forEach(faq => {
+                faq.classList.remove('active');
+            });
+            document.querySelectorAll('.faq-question span:last-child').forEach(i => {
+                i.textContent = '+';
+                i.style.transform = 'rotate(0deg)';
+            });
+            
+            if (!isActive) {
+                answer.classList.add('active');
+                icon.textContent = '-';
+                icon.style.transform = 'rotate(180deg)';
+                icon.style.transition = 'transform 0.3s ease';
+            }
+        }
+
+        // === VALIDAZIONE ===
+        function setupFormValidation() {
+            const nameField = document.getElementById('customer-name');
+            const contactField = document.getElementById('customer-contact');
+            const notesField = document.getElementById('customer-notes');
+            
+            if (nameField) {
+                nameField.addEventListener('input', () => {
+                    clearValidationError('customer-name', 'name-error');
+                    saveConfiguration();
+                });
+                nameField.addEventListener('blur', () => validateField('customer-name', 'name-error'));
+            }
+            
+            if (contactField) {
+                contactField.addEventListener('input', () => {
+                    clearValidationError('customer-contact', 'contact-error');
+                    saveConfiguration();
+                });
+                contactField.addEventListener('blur', () => validateField('customer-contact', 'contact-error'));
+            }
+            
+            if (notesField) {
+                notesField.addEventListener('input', saveConfiguration);
+            }
+        }
+
+        function validateField(fieldId, errorId) {
+            const field = document.getElementById(fieldId);
+            const error = document.getElementById(errorId);
+            
+            if (!field || !error) return true;
+            
+            const isEmpty = !field.value.trim();
+            
+            if (isEmpty) {
+                field.classList.add('validation-error');
+                error.style.display = 'block';
+                return false;
+            }
+            
+            field.classList.remove('validation-error');
+            error.style.display = 'none';
+            return true;
+        }
+
+        function clearValidationError(fieldId, errorId) {
+            const field = document.getElementById(fieldId);
+            const error = document.getElementById(errorId);
+            
+            if (field) field.classList.remove('validation-error');
+            if (error) error.style.display = 'none';
+        }
+
+        function validateAllFields() {
+            const nameField = document.getElementById('customer-name');
+            const contactField = document.getElementById('customer-contact');
+            
+            const nameValid = nameField && nameField.value.trim() !== '';
+            const contactValid = contactField && contactField.value.trim() !== '';
+            
+            if (!nameValid) validateField('customer-name', 'name-error');
+            if (!contactValid) validateField('customer-contact', 'contact-error');
+            
+            return nameValid && contactValid;
+        }
+
+        // === CONDIVISIONE ===
+        function copyConfigurationText() {
+            if (!validateAllFields()) {
+                showNotification('❌ Completa prima i campi obbligatori!', 'error');
+                return;
+            }
+            
+            const customerName = document.getElementById('customer-name')?.value || 'Cliente';
+            const customerContact = document.getElementById('customer-contact')?.value || 'Non specificato';
+            const customerNotes = document.getElementById('customer-notes')?.value || 'Nessuna nota';
+            const orderId = document.getElementById('order-code')?.textContent || 'RETRO-001';
+            const heroName = document.getElementById('hero-name')?.textContent || 'Captain Pixel';
+            
+            let total = 0;
+            Object.values(configuration).forEach(item => {
+                if (item && typeof item.price === 'number') {
+                    total += item.price;
+                }
+            });
+            
+            let configText = `🕷️ RETROAVIA - Il Supereroe dei Game Boy 🕷️\n\n`;
+            configText += `🦸‍♂️ DATI SUPEREROE:\n`;
+            configText += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
+            configText += `Nome: ${customerName}\n`;
+            configText += `Contatto: ${customerContact}\n`;
+            configText += `Note: ${customerNotes}\n`;
+            configText += `Nome Supereroe: ${heroName}\n`;
+            configText += `Codice Ordine: ${orderId}\n`;
+            configText += `Data: ${new Date().toLocaleDateString('it-IT')}\n\n`;
+            
+            configText += `⚡ CONFIGURAZIONE LEGGENDARIA:\n`;
+            configText += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
+            
+            const configLabels = {
+                'gameboy-model': '🎮 Modello Game Boy',
+                'modification-level': '🛡️ Livello di Modifica',
+                'label': '🏷️ Etichetta',
+                'battery': '🔋 Batteria',
+                'audio': '🎵 Audio',
+                'display': '📺 Display',
+                'led-kit': '✨ Kit LED',
+                'custom-box': '🎁 Box Personalizzato',
+                'transparent-cover': '🔍 Cover Trasparente',
+                'customer-gameboy': '✅ Game Boy Cliente'
+            };
+            
+            Object.entries(configuration).forEach(([key, value]) => {
+                if (value && value.name) {
+                    const label = configLabels[key];
+                    const priceText = value.price > 0 ? ` (+${value.price}€)` : value.price < 0 ? ` (${value.price}€)` : '';
+                    configText += `${label}: ${value.name}${priceText}\n`;
+                }
+            });
+            
+            // Aggiungi info sull'immagine personalizzata
+            if (customImageData && configuration['modification-level']?.name === 'Con scocca personalizzata') {
+                configText += `🎨 Immagine Personalizzata: ${customImageData.name} (${formatFileSize(customImageData.size)})\n`;
+            }
+            
+            configText += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
+            configText += `💰 PREZZO TOTALE: ${total}€\n\n`;
+            
+            const motivationalPhrase = motivationalPhrases[Math.floor(Math.random() * motivationalPhrases.length)];
+            configText += `${motivationalPhrase}\n\n`;
+            configText += `🚀 Configurazione creata con RetroAvia\n`;
+            configText += `🌟 Dove nascono le leggende del gaming!\n`;
+            configText += `📷 Seguici su Instagram: @retroavia_\n`;
+            configText += `🎮 Il tuo Game Boy sarà unico al mondo!`;
+            
+            navigator.clipboard.writeText(configText).then(() => {
+                showNotification('📋 Configurazione copiata negli appunti! ✅', 'success');
+            }).catch(() => {
+                const textArea = document.createElement('textarea');
+                textArea.value = configText;
+                document.body.appendChild(textArea);
+                textArea.select();
+                try {
+                    document.execCommand('copy');
+                    showNotification('📋 Configurazione copiata negli appunti! ✅', 'success');
+                } catch (err) {
+                    showNotification('❌ Impossibile copiare. Seleziona e copia manualmente!', 'error');
+                }
+                document.body.removeChild(textArea);
+            });
+        }
+
+        function shareViaEmail() {
+            if (!validateAllFields()) {
+                showNotification('❌ Completa prima i campi obbligatori!', 'error');
+                return;
+            }
+            
+            const customerName = document.getElementById('customer-name')?.value || 'Cliente';
+            const orderId = document.getElementById('order-code')?.textContent || 'RETRO-001';
+            const heroName = document.getElementById('hero-name')?.textContent || 'Captain Pixel';
+            
+            let total = 0;
+            Object.values(configuration).forEach(item => {
+                if (item && typeof item.price === 'number') {
+                    total += item.price;
+                }
+            });
+            
+            let bodyText = `🕷️ RETROAVIA\n\nSupereroe: ${customerName} (${heroName})\nTotale: ${total}€\n`;
+            
+            if (customImageData && configuration['modification-level']?.name === 'Con scocca personalizzata') {
+                bodyText += `\nImmagine personalizzata: ${customImageData.name}\n`;
+            }
+            
+            bodyText += `\n🚀 Creato con RetroAvia!`;
+            
+            const subject = `🕷️ RetroAvia - Configurazione ${heroName} (${orderId})`;
+            const mailtoLink = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(bodyText)}`;
+            
+            try {
+                window.open(mailtoLink);
+                showNotification('📧 Email preparata!', 'success');
+            } catch (error) {
+                showNotification('❌ Errore apertura email!', 'error');
+            }
+        }
+
+        function shareViaWhatsApp() {
+            if (!validateAllFields()) {
+                showNotification('❌ Completa prima i campi obbligatori!', 'error');
+                return;
+            }
+            
+            const customerName = document.getElementById('customer-name')?.value || 'Cliente';
+            const heroName = document.getElementById('hero-name')?.textContent || 'Captain Pixel';
+            
+            let total = 0;
+            Object.values(configuration).forEach(item => {
+                if (item && typeof item.price === 'number') {
+                    total += item.price;
+                }
+            });
+            
+            let text = `🕷️ *RETROAVIA*\n\nSupereroe: ${customerName} (${heroName})\nTotale: ${total}€\n`;
+            
+            if (customImageData && configuration['modification-level']?.name === 'Con scocca personalizzata') {
+                text += `\nImmagine personalizzata: ${customImageData.name}\n`;
+            }
+            
+            text += `\n🚀 Creato con RetroAvia!`;
+            
+            const whatsappLink = `https://wa.me/?text=${encodeURIComponent(text)}`;
+            
+            try {
+                window.open(whatsappLink, '_blank');
+                showNotification('📱 WhatsApp aperto!', 'success');
+            } catch (error) {
+                showNotification('❌ Errore apertura WhatsApp!', 'error');
+            }
+        }
+
+        function shareViaInstagram() {
+            if (!validateAllFields()) {
+                showNotification('❌ Completa prima i campi obbligatori!', 'error');
+                return;
+            }
+            
+            const heroName = document.getElementById('hero-name')?.textContent || 'Captain Pixel';
+            let total = 0;
+            Object.values(configuration).forEach(item => {
+                if (item && typeof item.price === 'number') {
+                    total += item.price;
+                }
+            });
+            
+            let text = `🕷️ RETROAVIA\n\nSupereroe: ${heroName}\nTotale: ${total}€\n`;
+            
+            if (customImageData && configuration['modification-level']?.name === 'Con scocca personalizzata') {
+                text += `\nImmagine personalizzata caricata! 🎨\n`;
+            }
+            
+            text += `\n#RetroAvia #GameBoy #Retrogaming`;
+            
+            navigator.clipboard.writeText(text).then(() => {
+                showNotification('📷 Testo copiato! Aprendo Instagram...', 'success');
+                setTimeout(() => {
+                    window.open('https://www.instagram.com/retroavia_/', '_blank');
+                }, 1000);
+            }).catch(() => {
+                showNotification('📋 Copia manualmente il testo!', 'error');
+                window.open('https://www.instagram.com/retroavia_/', '_blank');
+            });
+        }
+
+        // === UTILITÀ ===
+        function showNotification(text, type = 'success') {
+            const notification = document.getElementById('notification');
+            const notificationText = document.getElementById('notification-text');
+            
+            if (notification && notificationText) {
+                notification.classList.remove('error');
+                notificationText.textContent = text;
+                
+                if (type === 'error') {
+                    notification.classList.add('error');
+                }
+                
+                notification.classList.add('show');
+                setTimeout(() => {
+                    notification.classList.remove('show');
+                }, 4000);
+            }
+        }
+
+        function playSelectionEffect() {
+            if (navigator.vibrate) {
+                navigator.vibrate([50, 30, 50]);
+            }
+        }
+
+        function handleResize() {
+            const container = document.querySelector('.container');
+            const summaryPanel = document.querySelector('.summary-panel');
+            
+            if (window.innerWidth <= 1024) {
+                if (container) container.style.gridTemplateColumns = '1fr';
+                if (summaryPanel) {
+                    summaryPanel.style.position = 'relative';
+                    summaryPanel.style.top = 'auto';
+                }
+            } else {
+                if (container) container.style.gridTemplateColumns = '1fr 380px';
+                if (summaryPanel) {
+                    summaryPanel.style.position = 'sticky';
+                    summaryPanel.style.top = '2rem';
+                }
+            }
+        }
+
+        // === INIZIALIZZAZIONE ===
+        document.addEventListener('DOMContentLoaded', function() {
+            // Genera ID ordine unico
+            const orderCodeElement = document.getElementById('order-code');
+            if (orderCodeElement) {
+                orderCodeElement.textContent = generateUniqueOrderId();
+            }
+            
+            // Inizializza tutte le funzioni
+            updateSummary();
+            updateGameBoyPreview();
+            generateHeroName();
+            updateAISuggestions();
+            setupFormValidation();
+            setupImageUpload();
+            toggleImageUploadContainer();
+            
+            // Animazioni progressive per le sezioni
+            const sections = document.querySelectorAll('.section');
+            sections.forEach((section, index) => {
+                section.style.opacity = '0';
+                section.style.transform = 'translateY(30px)';
+                setTimeout(() => {
+                    section.style.transition = 'all 0.6s ease';
+                    section.style.opacity = '1';
+                    section.style.transform = 'translateY(0)';
+                }, index * 100);
+            });
+
+            // Gestione errori globale
+            window.addEventListener('error', function(e) {
+                console.error('Errore JavaScript:', e.error);
+            });
+        });
+
+        window.addEventListener('resize', handleResize);
+        window.addEventListener('load', handleResize);
+
+        document.addEventListener('click', function(e) {
+            const target = e.target;
+            
+            if (target.classList.contains('option') || target.closest('.option')) {
+                playSelectionEffect();
+            }
+            
+            if (target.classList.contains('btn')) {
+                playSelectionEffect();
+                
+                const ripple = document.createElement('span');
+                const rect = target.getBoundingClientRect();
+                const size = Math.max(rect.width, rect.height);
+                
+                ripple.style.cssText = `
+                    position: absolute;
+                    border-radius: 50%;
+                    background: rgba(255,255,255,0.6);
+                    transform: scale(0);
+                    animation: ripple 0.6s linear;
+                    width: ${size}px;
+                    height: ${size}px;
+                    left: ${e.clientX - rect.left - size/2}px;
+                    top: ${e.clientY - rect.top - size/2}px;
+                    pointer-events: none;
+                `;
+                
+                target.style.position = 'relative';
+                target.style.overflow = 'hidden';
+                target.appendChild(ripple);
+                
+                setTimeout(() => ripple.remove(), 600);
+            }
+        });
+    </script>
+</body>
+</html>
